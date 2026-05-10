@@ -1,6 +1,6 @@
 // --- DEPLOYMENT URL SETUP ---
 // Change this to your Render URL when deployed (e.g., "https://my-library.onrender.com")
-const API_BASE_URL = "http://127.0.0.1:5000";
+const API_BASE_URL = "https://books-h0tq.onrender.com";
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Security Check ---
