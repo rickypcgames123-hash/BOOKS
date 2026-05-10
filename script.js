@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Fetch & Display Books Dynamically ---
     async function loadBooks() {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/books`);
+            const response = await fetch('${API_BASE_URL}/api/books');
             const books = await response.json();
             
             bookGrid.innerHTML = ''; 
