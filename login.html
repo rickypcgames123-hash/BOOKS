@@ -9,7 +9,6 @@
 <body class="auth-body">
 
     <div class="auth-container">
-        <!-- Login Form -->
         <form id="login-form" class="auth-form active">
             <h2>Welcome Back</h2>
             <p>Select your account type and log in.</p>
@@ -35,7 +34,6 @@
             <a href="index.html" class="back-link">&larr; Back to Library</a>
         </form>
 
-        <!-- Sign Up Form -->
         <form id="signup-form" class="auth-form">
             <h2>Create Account</h2>
             <p>Register as a new User or Admin.</p>
@@ -59,6 +57,11 @@
                 <label for="signup-password">Password</label>
                 <input type="password" id="signup-password" placeholder="Create a secure password" required>
             </div>
+
+            <div id="admin-secret-container" class="input-group" style="display: none; margin-bottom: 1rem;">
+                <label for="admin-secret" style="color: #c0392b; font-weight: bold;">Admin Verification Code</label>
+                <input type="password" id="admin-secret" placeholder="Enter secret code..." style="border: 2px solid #c0392b;">
+            </div>
             
             <button type="submit" class="auth-btn">Register</button>
             
@@ -77,6 +80,23 @@
             document.getElementById('signup-form').classList.toggle('active');
         }
 
+        // --- Toggle Admin Secret Box ---
+        const signupAdminRadio = document.querySelector('input[name="signup-role"][value="admin"]');
+        const signupUserRadio = document.querySelector('input[name="signup-role"][value="user"]');
+        const secretContainer = document.getElementById('admin-secret-container');
+        const secretInput = document.getElementById('admin-secret');
+
+        if (signupAdminRadio && signupUserRadio) {
+            signupAdminRadio.addEventListener('change', () => {
+                secretContainer.style.display = 'block';
+                secretInput.required = true; // Make it required if admin is selected
+            });
+            signupUserRadio.addEventListener('change', () => {
+                secretContainer.style.display = 'none';
+                secretInput.required = false; // Remove requirement for normal users
+            });
+        }
+
         // --- Sign Up Logic ---
         document.getElementById('signup-form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -84,6 +104,15 @@
             const role = document.querySelector('input[name="signup-role"]:checked').value;
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
+
+            // --- ADMIN VERIFICATION CHECK ---
+            if (role === 'admin') {
+                const MASTER_ADMIN_CODE = "RickyAdmin2026!"; // <-- THIS IS YOUR SECRET CODE
+                if (secretInput.value !== MASTER_ADMIN_CODE) {
+                    alert("❌ Invalid Admin Verification Code. Registration blocked.");
+                    return; // Stops the registration immediately
+                }
+            }
 
             const userData = {
                 role: role,

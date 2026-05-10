@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const bookGrid = document.querySelector('.book-grid');
     const searchInput = document.querySelector('.search-container input');
     const searchBtn = document.querySelector('.search-btn');
-    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    // Changed to 'let' so we can add our custom buttons to this list!
+    let filterBtns = document.querySelectorAll('.filter-btn'); 
     
     if (loggedInAccount && loginBtn) {
         const prefix = currentAdmin ? "Admin:" : "User:";
@@ -58,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.setAttribute('data-category', book.category);
                 card.setAttribute('data-id', book.id); 
                 
-                // FIXED: Changed book.coverImage to book.coverimage (lowercase i) to match Postgres database
                 card.innerHTML = `
                     <img src="${book.coverimage}" alt="${book.title}" class="book-cover">
                     <h3>${book.title}</h3>
@@ -76,6 +77,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadBooks();
+
+    // --- 1.5 INJECT CUSTOM CATEGORY BUTTONS ---
+    const firstBtn = document.querySelector('.filter-btn');
+    const categoryContainer = firstBtn ? firstBtn.parentElement : null;
+    const savedCategories = JSON.parse(localStorage.getItem('customCategories')) || [];
+    
+    if (categoryContainer) {
+        savedCategories.forEach(category => {
+            // Only add the button if it doesn't already exist on the page
+            if (!document.querySelector(`[data-filter="${category}"]`)) {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.setAttribute('data-filter', category);
+                btn.textContent = category;
+                categoryContainer.appendChild(btn);
+            }
+        });
+        // Update our list of buttons to include the brand new ones!
+        filterBtns = document.querySelectorAll('.filter-btn'); 
+    }
 
     // --- 2. Search & Filter Logic ---
     const filterByText = () => {

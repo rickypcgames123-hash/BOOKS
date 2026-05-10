@@ -19,6 +19,16 @@
     </header>
 
     <section class="admin-dashboard">
+        
+        <div class="admin-container" style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid #ecf0f1;">
+            <h2>➕ Add a New Category</h2>
+            <p>Create custom genres for the library catalog.</p>
+            <div style="display: flex; gap: 10px; margin-top: 1rem;">
+                <input type="text" id="new-category-name" placeholder="e.g., Sci-Fi, Drama, Cookbooks..." style="flex: 1; padding: 0.8rem; border: 1px solid #bdc3c7; border-radius: 4px;">
+                <button id="add-category-btn" style="background: #3498db; color: white; border: none; padding: 0.8rem 1.5rem; cursor: pointer; border-radius: 4px; font-weight: bold;">Add Category</button>
+            </div>
+        </div>
+
         <div class="admin-container">
             <h2>Add a New Book</h2>
             <p>Fill out this form to add a book and upload its cover.</p>
@@ -45,8 +55,6 @@
                         <option value="classic">Classic</option>
                         <option value="fantasy">Fantasy</option>
                         <option value="dystopian">Dystopian</option>
-                        <option value="sci-fi">Sci-Fi</option>
-                        <option value="romance">Romance</option>
                     </select>
                 </div>
 

@@ -67,4 +67,49 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- 4. DYNAMIC CATEGORIES LOGIC ---
+    const addCategoryBtn = document.getElementById('add-category-btn');
+    const categoryDropdown = document.getElementById('book-category');
+
+    // Load custom categories when the admin page opens
+    function loadCustomCategories() {
+        const savedCategories = JSON.parse(localStorage.getItem('customCategories')) || [];
+        savedCategories.forEach(category => {
+            // Prevent duplicates in the dropdown
+            if (![...categoryDropdown.options].some(opt => opt.value === category)) {
+                const newOption = document.createElement('option');
+                newOption.value = category;
+                newOption.textContent = category;
+                categoryDropdown.appendChild(newOption);
+            }
+        });
+    }
+
+    // Add a new category
+    if (addCategoryBtn) {
+        addCategoryBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const newCatInput = document.getElementById('new-category-name');
+            const newCat = newCatInput.value.trim();
+
+            if (newCat === "") return alert("Please enter a category name!");
+
+            // Save to Local Storage
+            const savedCategories = JSON.parse(localStorage.getItem('customCategories')) || [];
+            if (!savedCategories.includes(newCat)) {
+                savedCategories.push(newCat);
+                localStorage.setItem('customCategories', JSON.stringify(savedCategories));
+                
+                alert(`✅ Added "${newCat}" to the library categories!`);
+                newCatInput.value = '';
+                loadCustomCategories(); // Refresh the dropdown
+            } else {
+                alert("This category already exists!");
+            }
+        });
+    }
+
+    // Run this immediately when admin page loads
+    if (categoryDropdown) loadCustomCategories();
 });
