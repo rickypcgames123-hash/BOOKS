@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Fetch & Display Books Dynamically ---
     async function loadBooks() {
         try {
-            // FIXED: Using backticks instead of single quotes here!
             const response = await fetch(`${API_BASE_URL}/api/books`);
             const books = await response.json();
             
@@ -59,8 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.setAttribute('data-category', book.category);
                 card.setAttribute('data-id', book.id); 
                 
+                // FIXED: Changed book.coverImage to book.coverimage (lowercase i) to match Postgres database
                 card.innerHTML = `
-                    <img src="${book.coverImage}" alt="${book.title}" class="book-cover">
+                    <img src="${book.coverimage}" alt="${book.title}" class="book-cover">
                     <h3>${book.title}</h3>
                     <p class="author">${book.author}</p>
                     <span class="status ${statusClass}">${statusText}</span>
