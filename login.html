@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Digital Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+
+    <div class="auth-container">
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active">
+            <h2>Welcome Back</h2>
+            <p>Select your account type and log in.</p>
+            
+            <div class="radio-group">
+                <label><input type="radio" name="login-role" value="user" checked> User</label>
+                <label><input type="radio" name="login-role" value="admin"> Admin</label>
+            </div>
+
+            <div class="input-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="Enter email" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="Enter password" required>
+            </div>
+            
+            <button type="submit" class="auth-btn">Log In</button>
+            
+            <p class="toggle-text">Don't have an account? <span class="toggle-link" onclick="toggleAuth()">Register here</span></p>
+            <a href="index.html" class="back-link">&larr; Back to Library</a>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signup-form" class="auth-form">
+            <h2>Create Account</h2>
+            <p>Register as a new User or Admin.</p>
+
+            <div class="radio-group">
+                <label><input type="radio" name="signup-role" value="user" checked> User</label>
+                <label><input type="radio" name="signup-role" value="admin"> Admin</label>
+            </div>
+
+            <div class="input-group">
+                <label for="signup-name">Full Name</label>
+                <input type="text" id="signup-name" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" placeholder="Enter email" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" placeholder="Create a secure password" required>
+            </div>
+            
+            <button type="submit" class="auth-btn">Register</button>
+            
+            <p class="toggle-text">Already have an account? <span class="toggle-link" onclick="toggleAuth()">Log In here</span></p>
+            <a href="index.html" class="back-link">&larr; Back to Library</a>
+        </form>
+    </div>
+
+    <script>
+        // --- DEPLOYMENT URL SETUP ---
+        // Change this to your Render URL when deployed
+        const API_BASE_URL = "http://127.0.0.1:5000";
+
+        function toggleAuth() {
+            document.getElementById('login-form').classList.toggle('active');
+            document.getElementById('signup-form').classList.toggle('active');
+        }
+
+        // --- Sign Up Logic ---
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const role = document.querySelector('input[name="signup-role"]:checked').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            const userData = {
+                role: role,
+                name: document.getElementById('signup-name').value,
+                email: email,
+                password: password
+            };
+
+            try {
+                const registerResponse = await fetch(`${API_BASE_URL}/api/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+                
+                const registerData = await registerResponse.json();
+                
+                if (registerResponse.ok) {
+                    const loginResponse = await fetch(`${API_BASE_URL}/api/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ role, email, password })
+                    });
+
+                    const loginData = await loginResponse.json();
+
+                    if (loginResponse.ok) {
+                        localStorage.removeItem('currentAdmin');
+                        localStorage.removeItem('currentUser');
+                        
+                        const sessionKey = loginData.user.role === 'admin' ? 'currentAdmin' : 'currentUser';
+                        localStorage.setItem(sessionKey, JSON.stringify(loginData.user));
+                        
+                        alert(`Success! ${registerData.message}\nLogging you in automatically...`);
+                        
+                        if (loginData.user.role === 'admin') {
+                            window.location.href = "admin.html";
+                        } else {
+                            window.location.href = "index.html"; 
+                        }
+                    }
+                } else {
+                    alert("Error: " + registerData.error);
+                }
+            } catch (error) {
+                console.error("Registration failed:", error);
+                alert("Failed to connect. Please make sure your Python Flask server is running!");
+            }
+        });
+
+        // --- Log In Logic ---
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const loginData = {
+                role: document.querySelector('input[name="login-role"]:checked').value,
+                email: document.getElementById('login-email').value,
+                password: document.getElementById('login-password').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.removeItem('currentAdmin');
+                    localStorage.removeItem('currentUser');
+                    
+                    const sessionKey = data.user.role === 'admin' ? 'currentAdmin' : 'currentUser';
+                    localStorage.setItem(sessionKey, JSON.stringify(data.user));
+                    
+                    alert(`Welcome back, ${data.user.name}!`);
+                    
+                    if (data.user.role === 'admin') {
+                        window.location.href = "admin.html";
+                    } else {
+                        window.location.href = "index.html"; 
+                    }
+                } else {
+                    alert(data.error); 
+                }
+            } catch (error) {
+                console.error("Login failed:", error);
+                alert("Failed to connect to the server.");
+            }
+        });
+    </script>
+</body>
+</html>

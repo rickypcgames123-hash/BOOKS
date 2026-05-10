@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Digital Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">Admin Dashboard</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Back to Library</a></li>
+                <li><a href="#" id="admin-logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="admin-dashboard">
+        <div class="admin-container">
+            <h2>Add a New Book</h2>
+            <p>Fill out this form to add a book and upload its cover.</p>
+
+            <form id="add-book-form">
+                <div class="input-group">
+                    <label for="book-title">Book Title</label>
+                    <input type="text" id="book-title" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="book-author">Author</label>
+                    <input type="text" id="book-author" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="book-isbn">ISBN Number</label>
+                    <input type="text" id="book-isbn" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="book-category">Category</label>
+                    <select id="book-category" required>
+                        <option value="classic">Classic</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="dystopian">Dystopian</option>
+                        <option value="sci-fi">Sci-Fi</option>
+                        <option value="romance">Romance</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="book-image">Cover Image</label>
+                    <input type="file" id="book-image" accept="image/png, image/jpeg, image/jpg" required>
+                </div>
+
+                <button type="submit" class="action-btn" style="width: 100%;">Add Book to Library</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="admin.js"></script>
+</body>
+</html>

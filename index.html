@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">Digital Library</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="admin.html" id="nav-admin-dash" style="display: none;">Dashboard</a></li>
+                <li><a href="#" id="nav-history-btn" style="display: none;">History</a></li>
+                <li><a href="login.html" id="nav-login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Discover Your Next Great Read</h1>
+        <p>Access thousands of e-books, audiobooks, and articles instantly.</p>
+        <div class="search-container">
+            <input type="text" placeholder="Search by title, author">
+            <button class="search-btn">Search</button>
+        </div>
+    </section>
+
+    <section id="categories" class="categories">
+        <h2>Browse by Category</h2>
+        <div class="category-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="classic">Classic</button>
+            <button class="filter-btn" data-filter="fantasy">Fantasy</button>
+            <button class="filter-btn" data-filter="dystopian">Dystopian</button>
+        </div>
+    </section>
+
+    <section class="catalog">
+        <div class="book-grid">
+            <!-- Books will be injected here by JavaScript -->
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Digital Library Open Source Project. All rights reserved.</p>
+    </footer>
+
+    <!-- History Modal (Admin Only) -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-history">&times;</span>
+            <h2>Library History Logs</h2>
+            <div class="history-container">
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Book</th>
+                            <th>User/Admin</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                        <!-- JavaScript will inject history rows here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
