@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('coverImage', imageFile);
 
             try {
-                const response = await fetch('${API_BASE_URL}/api/books', {
+                // FIXED: Using backticks instead of single quotes here!
+                const response = await fetch(`${API_BASE_URL}/api/books`, {
                     method: 'POST',
                     body: formData
                 });
