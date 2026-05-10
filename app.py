@@ -12,6 +12,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
+@app.route('/')
+def home():
+    return "The Digital Library API is online and running perfectly!"
 CORS(app)
 
 # --- CLOUDINARY CONFIGURATION ---
